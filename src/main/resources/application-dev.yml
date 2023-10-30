@@ -1,0 +1,30 @@
+spring:
+  data:
+    redis:
+      port: 26379
+      password:
+      sentinel:
+        master: mymaster
+        nodes: localhost
+  cache:
+    type: redis
+    redis:
+      cache-null-values: false
+      time-to-live: 300000
+  kafka:
+    bootstrap-servers: localhost:8097
+
+server:
+  port: 8080
+
+# External APIs
+external:
+  order_service:
+    ip: localhost
+    port: 8082
+    endpoint: /order/create
+
+  api2:
+    ip: 10.0.0.1
+    port: 9000
+    endpoint: /api2
