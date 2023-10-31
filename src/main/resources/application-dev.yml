@@ -15,7 +15,7 @@ spring:
     bootstrap-servers: localhost:8097
 
 server:
-  port: 8080
+  port: 8081
 
 # External APIs
 external:
@@ -24,7 +24,7 @@ external:
     port: 8082
     endpoint: /order/create
 
-  api2:
-    ip: 10.0.0.1
-    port: 9000
+  payment_service:
+    ip: localhost
+    port: 8083
     endpoint: /api2
