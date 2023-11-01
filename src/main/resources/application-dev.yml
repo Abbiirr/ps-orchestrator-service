@@ -19,12 +19,28 @@ server:
 
 # External APIs
 external:
-  order_service:
-    ip: localhost
+  product_service:
+    ip: http://localhost
     port: 8082
-    endpoint: /order/create
+
+
+  order_service:
+    ip: http://localhost
+    port: 8083
+
 
   payment_service:
-    ip: localhost
-    port: 8083
-    endpoint: /api2
+    ip: http://localhost
+    port: 8084
+
+endpoint:
+  product: /product
+  order: /order
+  payment: /payment
+  create: /create
+  get:
+    all: /all
+  add: /add
+  deduct: /deduct
+  debit: /debit
+  credit: /credit
