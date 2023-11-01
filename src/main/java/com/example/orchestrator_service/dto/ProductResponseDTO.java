@@ -1,6 +1,6 @@
-package com.example.product_service.dto;
+package com.example.orchestrator_service.dto;
 
-import com.example.product_service.enums.ProductStatus;
+import com.example.orchestrator_service.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

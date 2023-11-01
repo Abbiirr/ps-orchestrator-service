@@ -1,4 +1,4 @@
-package com.example.product_service.dto;
+package com.example.orchestrator_service.dto;
 
 import lombok.Getter;
 import lombok.Setter;
