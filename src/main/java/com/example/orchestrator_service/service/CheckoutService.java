@@ -1,4 +1,4 @@
-package com.example.product_service.service;
+package com.example.orchestrator_service.service;
 
 
 import org.springframework.beans.factory.annotation.Value;

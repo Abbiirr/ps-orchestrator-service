@@ -1,4 +1,4 @@
-package com.example.product_service.enums;
+package com.example.orchestrator_service.enums;
 
 public enum ProductStatus {
     UNAVAILABLE(),

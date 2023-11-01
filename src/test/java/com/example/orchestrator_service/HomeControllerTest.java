@@ -1,6 +1,6 @@
-package com.example.product_service;
+package com.example.orchestrator_service;
 
-import com.example.product_service.controller.HomeController;
+import com.example.orchestrator_service.controller.HomeController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

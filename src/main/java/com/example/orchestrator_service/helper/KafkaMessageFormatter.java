@@ -1,6 +1,6 @@
-package com.example.product_service.helper;
+package com.example.orchestrator_service.helper;
 
-import com.example.product_service.dto.CheckoutEventDTO;
+import com.example.orchestrator_service.dto.CheckoutEventDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
