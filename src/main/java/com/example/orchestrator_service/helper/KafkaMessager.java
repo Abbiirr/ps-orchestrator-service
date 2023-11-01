@@ -1,4 +1,4 @@
-package com.example.product_service.helper;
+package com.example.orchestrator_service.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,6 +6,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -21,6 +22,15 @@ public class KafkaMessager {
 
     public static String formatCheckoutRequest(Object requestDTO) throws JsonProcessingException {
         return objectMapper.writeValueAsString(requestDTO);
+    }
+
+    public String publishNextTopic(String message) {
+        UUID eventId = MessageToDTOConverter.getEventIdFromMessage(message);
+        String nextTopic =  EventParser.getNextStep(eventId);
+        if(nextTopic.equals("Completed")){
+            return "Completed";
+        }
+        return this.sendMessage(nextTopic, message);
     }
 
     public  String sendMessage(String topic,Object requestDTO) {
