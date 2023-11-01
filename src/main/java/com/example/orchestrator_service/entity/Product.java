@@ -1,4 +1,4 @@
-package com.example.product_service.entity;
+package com.example.orchestrator_service.entity;
 
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
