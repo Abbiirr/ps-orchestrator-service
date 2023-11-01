@@ -1,4 +1,4 @@
-package com.example.product_service.configuration;
+package com.example.orchestrator_service.configuration;
 
 import java.time.Duration;
 
