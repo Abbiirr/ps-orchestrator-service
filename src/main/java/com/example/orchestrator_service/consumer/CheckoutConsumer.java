@@ -1,13 +1,8 @@
-package com.example.product_service.consumer;
+package com.example.orchestrator_service.consumer;
 
-import com.example.product_service.enums.KafkaTopics;
-import com.example.product_service.service.CheckoutService;
+import com.example.orchestrator_service.enums.KafkaTopics;
+import com.example.orchestrator_service.service.CheckoutService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

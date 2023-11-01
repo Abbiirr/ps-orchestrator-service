@@ -1,6 +1,6 @@
-package com.example.product_service.consumer;
+package com.example.orchestrator_service.consumer;
 
-import com.example.product_service.helper.KafkaMessager;
+import com.example.orchestrator_service.helper.KafkaMessager;
 import org.springframework.kafka.annotation.KafkaListener;
 
 public class OrderConsumer {
@@ -20,10 +20,17 @@ public class OrderConsumer {
         //TODO: Check balance is sufficient & debit balance
 //        return kafkaMessager.sendMessage("debit_payment", message);
         //TODO: if any returns error, reverse action(s)
-        if(message.equals("success")) {
+        if (message.equals("success")) {
             return kafkaMessager.sendMessage("order_created", message);
         } else {
             return kafkaMessager.sendMessage("order_failed", message);
         }
+    }
+
+    @KafkaListener(topics = "post_get_order", groupId = "group_1", containerFactory = "kafkaListenerContainerFactory")
+    public String postGetOrderListener(String message) {
+
+        return kafkaMessager.publishNextTopic(message);
+
     }
 }
