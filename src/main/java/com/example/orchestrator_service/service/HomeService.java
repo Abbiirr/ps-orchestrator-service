@@ -1,8 +1,8 @@
-package com.example.product_service.service;
+package com.example.orchestrator_service.service;
 
-import com.example.product_service.dto.StudentDto;
-import com.example.product_service.entity.Student;
-import com.example.product_service.repository.StudentRepository;
+import com.example.orchestrator_service.dto.StudentDto;
+import com.example.orchestrator_service.entity.Student;
+import com.example.orchestrator_service.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
