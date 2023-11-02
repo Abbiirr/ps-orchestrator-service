@@ -7,10 +7,15 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Component
 public class OrderConsumer {
 
     private final KafkaMessager kafkaMessager;
+    private final Set<String> postOrderCheckoutEvents = ConcurrentHashMap.newKeySet();
+    private final Set<String> postGetOrderEvents = ConcurrentHashMap.newKeySet();
 
     public OrderConsumer(KafkaMessager kafkaMessager) {
         this.kafkaMessager = kafkaMessager;
@@ -41,12 +46,20 @@ public class OrderConsumer {
 
         //TODO: Check message to find if last action failed
         if(MessageToDTOConverter.getField(message, "status").equals("fail")){
+            EventParser.setEventToRollback(MessageToDTOConverter.getField(message, "eventId"));
             acknowledgment.acknowledge();
             return "failed";
         }
         //TODO: if failed then reverse action(s)
         //TODO: set isRollback to true and send message to next topic
         String eventId = MessageToDTOConverter.getField(message, "eventId");
+        if(postGetOrderEvents.contains(eventId)){
+            acknowledgment.acknowledge();
+            return "Completed";
+        }
+        else {
+            postGetOrderEvents.add(eventId);
+        }
         String nextTopic =  EventParser.getNextStep(eventId);
         if(nextTopic.equals("Completed")){
             return "Completed";

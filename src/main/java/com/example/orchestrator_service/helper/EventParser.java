@@ -4,6 +4,7 @@ import com.example.orchestrator_service.constants.PurchaseSingleEventSteps;
 import com.example.orchestrator_service.entity.Event;
 import com.example.orchestrator_service.enums.EventStatus;
 import com.example.orchestrator_service.enums.EventType;
+import com.example.orchestrator_service.exception.EventNotFoundException;
 import com.example.orchestrator_service.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,15 +22,24 @@ public class EventParser {
         EventParser.eventRepository = eventRepository;
     }
 
-    public static String getNextStep(String eventId) {
-        Event event = eventRepository.findById(eventId).orElseThrow();
+   public static String getNextStep(String eventId) {
+    try {
+        Event event = findEventById(eventId);
+        if(event == null){
+            return "Event not found";
+        }
+//        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found with eventId: " + eventId));
+
         if (event.getEventStatus() == EventStatus.COMPLETED) {
             return "COMPLETED";
         }
+
         if (event.getEventType() == EventType.DIRECT) {
             return "DIRECT, no workflow needed";
         }
+
         String nextStep = "ERROR";
+
         if (event.getEventType() == EventType.PURCHASE_SINGLE) {
             if (!event.isRollBack()) {
                 nextStep = getPurchaseSingleForwardStep(event.getEventStep());
@@ -46,11 +56,16 @@ public class EventParser {
                     event.setEventStep(event.getEventStep() + 1);
                 }
             }
-
         }
+
         eventRepository.save(event);
         return nextStep;
+    } catch (EventNotFoundException e) {
+        // Handle the case where the Event is not found
+        e.printStackTrace(); // Print the exception for debugging
+        return "Event not found";
     }
+}
 
     private static String getPurchaseSingleForwardStep(int step) {
         if (step == 1) {
@@ -83,4 +98,12 @@ public class EventParser {
         eventRepository.save(event);
         return "success";
     }
+
+    public static Event findEventById(String eventId) {
+    Event event = eventRepository.findById(eventId).orElse(null);
+    if (event == null) {
+        throw new EventNotFoundException("Event not found with eventId: " + eventId);
+    }
+    return event;
+}
 }

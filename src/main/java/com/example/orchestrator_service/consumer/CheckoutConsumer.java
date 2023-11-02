@@ -7,6 +7,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Component
 public class CheckoutConsumer {
 
@@ -14,6 +17,7 @@ public class CheckoutConsumer {
     private final RestTemplate restTemplate;
 
     private static final String topicName = KafkaTopics.CHECKOUT_TOPIC.getTopicName();
+    private final Set<String> processedEventIds = ConcurrentHashMap.newKeySet();
 
     @Autowired
     public CheckoutConsumer(CheckoutService checkoutService, RestTemplate restTemplate) {
