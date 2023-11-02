@@ -1,8 +1,13 @@
 package com.example.orchestrator_service.consumer;
 
+import com.example.orchestrator_service.helper.EventParser;
 import com.example.orchestrator_service.helper.KafkaMessager;
+import com.example.orchestrator_service.helper.MessageToDTOConverter;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderConsumer {
 
     private final KafkaMessager kafkaMessager;
@@ -12,7 +17,7 @@ public class OrderConsumer {
     }
 
     @KafkaListener(topics = "order_payment_request", groupId = "group_1", containerFactory = "kafkaListenerContainerFactory")
-    public String postOrderCheckoutListener(String message) {
+    public String postOrderCheckoutListener(String message, Acknowledgment acknowledgment) {
         //TODO: Check User exists & order exists for that user & balance is sufficient(optional)
 //        return kafkaMessager.sendMessage("check_user_status", message);
         //TODO: Check product available & deduct
@@ -20,17 +25,35 @@ public class OrderConsumer {
         //TODO: Check balance is sufficient & debit balance
 //        return kafkaMessager.sendMessage("debit_payment", message);
         //TODO: if any returns error, reverse action(s)
+        String response;
         if (message.equals("success")) {
-            return kafkaMessager.sendMessage("order_created", message);
+             response = kafkaMessager.sendMessage("order_created", message);
+             acknowledgment.acknowledge();
         } else {
-            return kafkaMessager.sendMessage("order_failed", message);
+            response = kafkaMessager.sendMessage("order_failed", message);
+            acknowledgment.acknowledge();
         }
+        return response;
     }
 
     @KafkaListener(topics = "post_get_order", groupId = "group_1", containerFactory = "kafkaListenerContainerFactory")
-    public String postGetOrderListener(String message) {
+    public String postGetOrderListener(String message, Acknowledgment acknowledgment) {
 
-        return kafkaMessager.publishNextTopic(message);
+        //TODO: Check message to find if last action failed
+        if(MessageToDTOConverter.getField(message, "status").equals("fail")){
+            acknowledgment.acknowledge();
+            return "failed";
+        }
+        //TODO: if failed then reverse action(s)
+        //TODO: set isRollback to true and send message to next topic
+        String eventId = MessageToDTOConverter.getField(message, "eventId");
+        String nextTopic =  EventParser.getNextStep(eventId);
+        if(nextTopic.equals("Completed")){
+            return "Completed";
+        }
+        String response =  kafkaMessager.sendMessage(nextTopic, message);
+        acknowledgment.acknowledge();
+        return response;
 
     }
 }

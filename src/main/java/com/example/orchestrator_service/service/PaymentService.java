@@ -1,7 +1,7 @@
 package com.example.orchestrator_service.service;
 
-import com.example.api_gateway.constants.PaymentAPIEndpoints;
-import com.example.api_gateway.dto.PaymentRequestDTO;
+import com.example.orchestrator_service.constants.PaymentAPIEndpoints;
+import com.example.orchestrator_service.dto.PaymentRequestDTO;
 import com.example.orchestrator_service.dto.DebitBalanceDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

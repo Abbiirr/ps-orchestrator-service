@@ -21,8 +21,8 @@ public class EventParser {
         EventParser.eventRepository = eventRepository;
     }
 
-    public static String getNextStep(UUID eventId) {
-        Event event = eventRepository.findById(eventId.toString()).orElseThrow();
+    public static String getNextStep(String eventId) {
+        Event event = eventRepository.findById(eventId).orElseThrow();
         if (event.getEventStatus() == EventStatus.COMPLETED) {
             return "COMPLETED";
         }
@@ -75,5 +75,12 @@ public class EventParser {
         } else {
             return "COMPLETED";
         }
+    }
+
+    public static String setEventToRollback(String eventId){
+        Event event = eventRepository.findById(eventId).orElseThrow();
+        event.setRollBack(true);
+        eventRepository.save(event);
+        return "success";
     }
 }

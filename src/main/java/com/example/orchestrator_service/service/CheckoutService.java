@@ -15,8 +15,7 @@ public class CheckoutService {
     @Value("${external.order_service.port}")
     private int orderServicePort;
 
-    @Value("${external.order_service.endpoint}")
-    private String orderServiceEndpoint;
+
 
     private final RestTemplate restTemplate;
 
@@ -27,7 +26,7 @@ public class CheckoutService {
 
     public void processCheckout(String message) {
         // Make REST POST request to the external API
-        String url = orderServiceIp + ":" + orderServicePort + orderServiceEndpoint;
+        String url = orderServiceIp + ":" + orderServicePort ;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         // Set any required headers

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Builder
 public class Event {
     @Id
-    private UUID eventId;
+    private String eventId;
     private EventStatus eventStatus;
     private EventType eventType;
     private int eventStep;
