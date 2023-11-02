@@ -42,18 +42,14 @@ public class EventParser {
 
         if (event.getEventType() == EventType.PURCHASE_SINGLE) {
             if (!event.isRollBack()) {
-                nextStep = getPurchaseSingleForwardStep(event.getEventStep());
+                nextStep = getPurchaseSingleForwardStep(event);
                 if (nextStep.equals("COMPLETED")) {
                     event.setEventStatus(EventStatus.COMPLETED);
-                } else {
-                    event.setEventStep(event.getEventStep() + 1);
                 }
             } else {
-                nextStep = getPurchaseSingleRollbackStep(event.getEventStep());
+                nextStep = getPurchaseSingleRollbackStep(event);
                 if (nextStep.equals("COMPLETED")) {
                     event.setEventStatus(EventStatus.COMPLETED);
-                } else {
-                    event.setEventStep(event.getEventStep() + 1);
                 }
             }
         }
@@ -67,29 +63,34 @@ public class EventParser {
     }
 }
 
-    private static String getPurchaseSingleForwardStep(int step) {
+    private static String getPurchaseSingleForwardStep(Event event) {
+        int step = event.getEventStep();
+        String nextStep = "ERROR";
         if (step == 1) {
-            return PurchaseSingleEventSteps.STEP_1_TOPIC;
+            nextStep =  PurchaseSingleEventSteps.STEP_1_TOPIC;
         } else if (step == 2) {
-            return PurchaseSingleEventSteps.STEP_2_TOPIC;
+            nextStep = PurchaseSingleEventSteps.STEP_2_TOPIC;
         } else if (step == 3) {
-            return PurchaseSingleEventSteps.STEP_3_TOPIC;
+            nextStep = PurchaseSingleEventSteps.STEP_3_TOPIC;
         } else if (step == 4) {
-            return PurchaseSingleEventSteps.STEP_4_TOPIC;
+            nextStep = PurchaseSingleEventSteps.STEP_4_TOPIC;
         } else if (step == 5) {
-            return "COMPLETED";
+            nextStep = "COMPLETED";
         }
-        return "Error";
+        event.setEventStep(step + 1);
+        return nextStep;
     }
 
-    private static String getPurchaseSingleRollbackStep(int step) {
-        if (step == 4) {
-            return PurchaseSingleEventSteps.STEP_4_TOPIC_REVERSE;
-        } else if (step == 5) {
-            return PurchaseSingleEventSteps.STEP_5_TOPIC_REVERSE;
+    private static String getPurchaseSingleRollbackStep(Event event) {
+        int step = event.getEventStep();
+        String nextStep = "ERROR";
+         if (step == 5) {
+            nextStep =  PurchaseSingleEventSteps.STEP_5_TOPIC_REVERSE;
         } else {
-            return "COMPLETED";
+            nextStep =  "COMPLETED";
         }
+         event.setEventStep(step - 1);
+        return nextStep;
     }
 
     public static String setEventToRollback(String eventId){

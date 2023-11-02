@@ -18,7 +18,7 @@ public class PurchaseSingleEventSteps {
     public static final String STEP_4_TOPIC = KafkaTopics.DEBIT_BALANCE.getTopicName();
     public static final String STEP_5_TOPIC = KafkaTopics.PAYMENT_COMPLETE.getTopicName();
 
-    public static final String STEP_4_TOPIC_REVERSE = KafkaTopics.ADD_PRODUCTS.getTopicName();
-    public static final String STEP_5_TOPIC_REVERSE = KafkaTopics.CREDIT_BALANCE.getTopicName();
+//    public static final String STEP_4_TOPIC_REVERSE = KafkaTopics.ADD_PRODUCTS.getTopicName();
+    public static final String STEP_5_TOPIC_REVERSE = KafkaTopics.ADD_PRODUCTS.getTopicName();
 
 }
